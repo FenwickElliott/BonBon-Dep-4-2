@@ -55,26 +55,3 @@ void finalStop() {
   M1->run(FORWARD);
   M1->setSpeed(0);
 }
-
-
-//void loop() {
-//  for (i = 0; i < n; i++) {
-//    if(digitalRead(SW[i]) == HIGH && i != state) {
-//      setState(i);
-//    }
-//  }
-//}
-
-//void setState(int s) {
-//  state = s;
-//  Serial.print("State: ");
-//  Serial.println(state);
-//  for(i = 0; i < 3; i++) {
-//    if(i == s) {
-//      digitalWrite(LED[i], HIGH);
-//    } else {
-//      digitalWrite(LED[i], LOW);
-//    }
-//  }
-//}
-
