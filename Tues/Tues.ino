@@ -23,7 +23,7 @@ void setup() {
     pinMode(SW[i], INPUT);
     pinMode(LED[i], OUTPUT);
   }
-  setPhase(0);
+  setPhase(2);
   Serial.println("Setup complete");
 }
 
@@ -39,6 +39,24 @@ void setPhase(int p) {
   Serial.print("Setting phase: ");
   Serial.println(p);
   phase = p;
+
+  switch(p) {
+    case 0:
+      M1->run(FORWARD);
+      M1->setSpeed(255);
+      break;
+    case 1:
+      Serial.println("Ramp down...");
+      break;
+    case 2:
+      M1->run(RELEASE);
+      break;
+    default:
+      M1->run(RELEASE);
+      Serial.println("Error: invalid phase");
+//      break;
+  }
+  
   for(i = 0; i < n; i++) {
     if( i == p) {
       digitalWrite(LED[i], HIGH);
