@@ -3,19 +3,19 @@
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *M1 = AFMS.getMotor(1);
-int M1s;
+int M1s; // Motor_1_speed
 
-int phase;
-int i;
+int phase; // 0 := running, 1 := ramping down, 2: halting
+int i; // all perpuse iterator
 
-unsigned long t;
-unsigned long last;
-int interval = 50;
+unsigned long t; // time since commencment
+unsigned long last; // time since last count
+int interval = 50; // count interval
 
-int SW[] = {2,3,4};
-int LED[] = {10,11,12};
-int n = 3;
-int ramp;
+int SW[] = {2,3,4}; // switches
+int LED[] = {10,11,12}; // LEDs
+int n = 3; // number to interate to
+int ramp; // ramping coefficient
 
 void setup() {
   Serial.begin(9600);
