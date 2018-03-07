@@ -6,18 +6,22 @@ Adafruit_DCMotor *M1 = AFMS.getMotor(1);
 
 int phase;
 int i;
-int t;
+unsigned long t;
+unsigned long last;
+int interval = 1000;
 
-int SW[] = {3,4,5};
+int SW[] = {2,      3,4};
 int LED[] = {10,11, 12};
 int n = 3;
+int ramp;
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Begining setup");
   AFMS.begin();
-  M1->setSpeed(0);
-  M1->run(FORWARD);
+
+  ramp = -1;
+//  t = millis();
 
   for(i = 0; i < n; i++) {
     pinMode(SW[i], INPUT);
@@ -32,6 +36,12 @@ void loop() {
     if(digitalRead(SW[i]) == HIGH && phase != i) {
       setPhase(i);
     }
+  }
+
+  t = millis();
+  if(t - last > interval) {
+    last = t;
+    Serial.println("chime");
   }
 }
 
