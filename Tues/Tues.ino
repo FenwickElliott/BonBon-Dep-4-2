@@ -39,12 +39,13 @@ void loop() {
 
   t = millis();
   if(t - last > interval) {
-    if(M1s < 100) {
-      ramp = 0;
-    }
     last = t;
     M1s = M1s + ramp;
     M1->setSpeed(M1s);
+    Serial.println(M1s);
+    if(M1s < 100 || M1s >= 255) {
+      ramp = 0;
+    }
   }
 }
 
@@ -57,7 +58,8 @@ void setPhase(int p) {
     case 0:
       Serial.println("Starting up...");
       M1->run(FORWARD);
-      M1s = 255;
+      M1s = 100;
+      ramp = 1;
       M1->setSpeed(M1s);
       break;
     case 1:
