@@ -13,8 +13,10 @@ unsigned long t; // time since commencment
 unsigned long last; // time since last count
 int interval = 50; // count interval
 
-int SW[] = {99, 2, 3, 4, 5, 6, 7};
-int n = 6;
+//int SW[] = {2, 3, 4, 5, 6, 7};
+//int n = 6;
+int SW[] = {2};
+int n = 1;
 int ramp;
 
 void setup() {
@@ -25,77 +27,87 @@ void setup() {
   for(i = 0; i < n; i++) {
     pinMode(SW[i], INPUT);
   }
-  setPhase(0);
+  phase = 0;
   Serial.println("Setup complete");
 }
 
 void loop() {
-  
-}
+ for(i = 0; i< n; i++) {
+    if(digitalRead(SW[i]) == HIGH) {
+      depressed(i);
+    }
+  }
 
-void setPhase(int p) {
-  Serial.print("Setting phase: ");
-  Serial.println(p);
-}
-
-
-//
-//void loop() {
-//  for(i = 0; i< n; i++) {
-//    if(digitalRead(SW[i]) == HIGH && phase != i) {
-//      setPhase(i);
-//    }
-//  }
-//
-//  t = millis();
-//  if(t - last > interval) {
-//    last = t;
-//    M1s = M1s + ramp;
-//    M1->setSpeed(M1s);
+  t = millis();
+  if(t - last > interval) {
+    last = t;
+    M1s = M1s + ramp;
+    M1->setSpeed(M1s);
 //    Serial.println(M1s);
-//    if(M1s < 100 || M1s >= 255) {
-//      ramp = 0;
-//    }
-//  }
-//}
-//
-//void setPhase(int p) {
-//  Serial.print("Setting phase: ");
-//  Serial.println(p);
-//  phase = p;
-//
-//  switch(p) {
-//    case 0:
-//      Serial.println("Starting up...");
-//      M1->run(FORWARD);
-//      M1s = 100;
-//      ramp = 1;
-//      M1->setSpeed(M1s);
-//      break;
-//    case 1:
-//      Serial.println("Ramp down...");
-//      ramp = -1;
-//      break;
-//    case 2:
-//      Serial.println("Halting...");
-//      M1s = 0;
-//      M1->run(RELEASE);
-//      break;
-//    case 3:
-//      Serial.println("Backing up...");
-//      M1->run(BACKWARD);
-//      m1->setSpeed(255);
-//    default:
-//      M1->run(RELEASE);
-//      Serial.println("Error: invalid phase");
-//      break;
-//  }
-//  
-//  for(i = 0; i < n; i++) {
-//    if( i == p) {
-//      digitalWrite(LED[i], HIGH);
-//    } else {
-//      digitalWrite(LED[i], LOW);
-//    }
-//  }
-//}
+    if(M1s < 100 || M1s >= 255) {
+      ramp = 0;
+    }
+  }
+}
+
+void depressed(int sw) {
+   Serial.println(sw);
+   switch(sw){
+     case 0:
+      buttonZero();
+      break;
+     case 1:
+      buttonOne();
+      break;
+     case 2:
+      buttonTwo();
+      break;
+     case 3:
+      buttonThree();
+      break;
+     default:
+      M1->run(RELEASE);
+      M1s = 0;
+      ramp = 0;
+      Serial.println("Error: invalid phase");
+      break;
+   }
+}
+
+void buttonZero() {
+  if (phase == 0) {
+    phase = 1;
+    Serial.println("Phase 1: Ramping up, forward");
+    M1->run(FORWARD);
+    M1s = 100;
+    ramp = 1;
+  }
+}
+
+void buttonOne() {
+  if (phase == 1) {
+    phase = 2;
+    Serial.println("Phase 2: Full speed, forward");
+    M1s = 255;
+    ramp = 0;
+  }
+}
+
+void buttonTwo() {
+  if (phase == 2) {
+    phase = 3;
+    Serial.println("Phase 3: Ramping down, forward");
+    ramp = -1;
+  }
+}
+
+void buttonThree() {
+  if (phase == 3) {
+    phase = 4;
+    Serial.println("Phase 4: Full Stop, far end");
+    M1->run(RELEASE);
+    M1s = 0;
+    ramp = 0;
+  }
+}
+
