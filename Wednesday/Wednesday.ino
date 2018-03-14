@@ -13,10 +13,10 @@ unsigned long t; // time since commencment
 unsigned long last; // time since last count
 int interval = 50; // count interval
 
-//int SW[] = {2, 3, 4, 5, 6, 7};
-//int n = 6;
-int SW[] = {2};
-int n = 1;
+int SW[] = {2, 3, 4, 5, 6, 7};
+int n = 6;
+//int SW[] = {3};
+//int n = 1;
 int ramp;
 
 void setup() {
@@ -29,6 +29,12 @@ void setup() {
   }
   phase = 0;
   Serial.println("Setup complete");
+  
+  for(i = 3; i > 0; i--) {
+    Serial.println(i);
+    delay(1000);
+  }
+  buttonZero();
 }
 
 void loop() {
@@ -85,6 +91,7 @@ void buttonZero() {
 }
 
 void buttonOne() {
+  Serial.println(1);
   if (phase == 7) {
     phase = 0;
     Serial.println("Phase 0; Full stop, near end");
@@ -95,6 +102,7 @@ void buttonOne() {
 }
 
 void buttonTwo() {
+  Serial.println(2);
   if (phase == 1) {
     phase = 2;
     Serial.println("Phase 2: Full speed, forward");
