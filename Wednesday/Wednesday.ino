@@ -85,29 +85,58 @@ void buttonZero() {
 }
 
 void buttonOne() {
-  if (phase == 1) {
-    phase = 2;
-    Serial.println("Phase 2: Full speed, forward");
-    M1s = 255;
+  if (phase == 7) {
+    phase = 0;
+    Serial.println("Phase 0; Full stop, near end");
+    M1->run(RELEASE);
+    M1s = 0;
     ramp = 0;
   }
 }
 
 void buttonTwo() {
-  if (phase == 2) {
-    phase = 3;
-    Serial.println("Phase 3: Ramping down, forward");
+  if (phase == 1) {
+    phase = 2;
+    Serial.println("Phase 2: Full speed, forward");
+    M1s = 255;
+    ramp = 0;
+  } else if (phase == 6) {
+    phase = 7;
+    Serial.println("Phase 7: Ramping down, backward");
     ramp = -1;
   }
 }
 
 void buttonThree() {
+  if (phase == 2) {
+    phase = 3;
+    Serial.println("Phase 3: Ramping down, forward");
+    ramp = -1;
+  } else if (phase == 5) {
+    phase = 6;
+    Serial.println("Phase 6: Full speed, backward");
+    M1s = 255;
+    ramp = 0;
+  }
+}
+
+void buttonFour() {
   if (phase == 3) {
     phase = 4;
     Serial.println("Phase 4: Full Stop, far end");
     M1->run(RELEASE);
     M1s = 0;
     ramp = 0;
+  }
+}
+
+void buttonFive() {
+  if (phase == 4) {
+    phase = 5;
+    Serial.println("Phase 5: Ramping up, backward");
+    M1->run(BACKWARD);
+    M1s = 100;
+    ramp = 1;
   }
 }
 
