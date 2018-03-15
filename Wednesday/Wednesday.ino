@@ -13,10 +13,8 @@ unsigned long t; // time since commencment
 unsigned long last; // time since last count
 int interval = 50; // count interval
 
-int SW[] = {2, 3, 4, 5, 6, 7};
-int n = 6;
-//int SW[] = {3};
-//int n = 1;
+int SW[] = {3, 4, 5, 6};
+int n = 4;
 int ramp;
 
 void setup() {
@@ -49,7 +47,6 @@ void loop() {
     last = t;
     M1s = M1s + ramp;
     M1->setSpeed(M1s);
-//    Serial.println(M1s);
     if(M1s < 100 || M1s >= 255) {
       ramp = 0;
     }
@@ -70,6 +67,12 @@ void depressed(int sw) {
       break;
      case 3:
       buttonThree();
+      break;
+     case 4:
+      buttonFour();
+      break;
+     case 5:
+      buttonFive();
       break;
      default:
       M1->run(RELEASE);
